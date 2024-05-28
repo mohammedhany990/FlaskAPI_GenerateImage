@@ -1,17 +1,10 @@
-# app.py
 from flask import Flask, request, render_template, flash, send_file,jsonify, send_from_directory
-from sqlalchemy import create_engine, Column, String, Integer, LargeBinary
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-import tensorflow as tf
 import numpy as np
-from io import BytesIO
 from PIL import Image
 import torch
 from diffusers import StableDiffusionPipeline
-import os
-import matplotlib.pyplot as plt
 import secrets
+
 model = "dreamlike-art/dreamlike-diffusion-1.0"
 pipe = StableDiffusionPipeline.from_pretrained(model, torch_dtype=torch.float16, use_safetensors=True)
 pipe = pipe.to("cuda")
