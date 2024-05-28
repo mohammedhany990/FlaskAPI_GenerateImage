@@ -43,4 +43,4 @@ def generate():
 def serve_image(filename):
     return send_from_directory('.', filename)
 
-app.run(host=0.0.0.0,port=5000)
+app.run(host="0.0.0.0",port=5000)
