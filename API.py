@@ -36,4 +36,8 @@ def generate():
 def serve_image(filename):
     return send_from_directory('.', filename)
 
+@app.route('/')
+def index():
+    return send_from_directory('.', 'index.html')
+
 app.run(host="0.0.0.0",port=5000)
