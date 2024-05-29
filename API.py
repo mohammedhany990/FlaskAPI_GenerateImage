@@ -1,24 +1,22 @@
-from flask import Flask, request, render_template, flash, send_file,jsonify, send_from_directory,send_from_directory,url_for
-import numpy as np
-from PIL import Image
-import torch
-from diffusers import StableDiffusionPipeline
-import secrets
-
-
+from flask import Flask, request, jsonify, send_from_directory, url_for
 
 app = Flask(__name__)
 
-
 def generate_image(prompt):
     # Assuming `pipe` is defined somewhere in your code
-    image = np.array(pipe(prompt=prompt).images[0])
-    return image
+    # You need to implement this function or replace it with your image generation logic
+    return None
 
 @app.route('/generate', methods=['POST'])
 def generate():
-    text = request.json['text']
+    text = request.json.get('text')
+    if not text:
+        return jsonify({'error': 'Text parameter is missing'}), 400
+    
     image = generate_image(text)
+    if not image:
+        return jsonify({'error': 'Failed to generate image'}), 500
+
     # Convert the NumPy array to a PIL Image
     pil_image = Image.fromarray(image)
     # Save the PIL Image in the static directory
@@ -32,6 +30,7 @@ def generate():
 
 @app.route('/')
 def index():
-    return send_from_directory('.','index.html')
+    return send_from_directory('.', 'index.html')
 
-app.run(host="0.0.0.0", port=5000)
+if __name__ == "__main__":
+    app.run(debug=False)
