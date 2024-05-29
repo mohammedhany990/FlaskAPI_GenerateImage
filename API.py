@@ -38,6 +38,6 @@ def serve_image(filename):
 
 @app.route('/')
 def index():
-    return send_from_directory('.', 'index.html')
+    return render_template('index.html')
 
 app.run(host="0.0.0.0",port=5000)
