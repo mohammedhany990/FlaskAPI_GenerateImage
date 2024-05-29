@@ -1,16 +1,17 @@
-from flask import Flask, request, render_template, flash, send_file,jsonify, send_from_directory
+from flask import Flask, request, render_template, flash, send_file,jsonify, send_from_directory,send_from_directory,url_for
 import numpy as np
 from PIL import Image
 import torch
 from diffusers import StableDiffusionPipeline
 import secrets
 
-model = "dreamlike-art/dreamlike-diffusion-1.0"
-pipe = StableDiffusionPipeline.from_pretrained(model, torch_dtype=torch.float16, use_safetensors=True)
-pipe = pipe.to("cuda")
-model = torch.load("E:/CodePractice/Flask/Final API/model.h5")
+
 
 app = Flask(__name__)
+
+# Ensure the 'static' directory exists
+if not os.path.exists('static'):
+    os.makedirs('static')
 
 def generate_image(prompt):
     # Assuming `pipe` is defined somewhere in your code
@@ -23,21 +24,17 @@ def generate():
     image = generate_image(text)
     # Convert the NumPy array to a PIL Image
     pil_image = Image.fromarray(image)
-    Save the PIL Image as a temporary file
+    # Save the PIL Image in the static directory
     random_string = secrets.token_hex(8)
-    filename = f'generated_{random_string}.png'
-    #pil_image.save(filename)
+    filename = f'static/generated_{random_string}.png'
+    pil_image.save(filename)
     # Generate the URL for the image
-    url = request.host_url + 'static/' + filename
+    url = url_for('static', filename=f'generated_{random_string}.png')
     # Return the URL as a JSON response
     return jsonify({'image_url': url})
 
-@app.route('/static/<filename>')
-def serve_image(filename):
-    return send_from_directory('.', filename)
-
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return send_from_directory('.','index.html')
 
-app.run(host="0.0.0.0",port=5000)
+app.run(host="0.0.0.0", port=5000)
