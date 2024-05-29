@@ -9,9 +9,6 @@ import secrets
 
 app = Flask(__name__)
 
-# Ensure the 'static' directory exists
-if not os.path.exists('static'):
-    os.makedirs('static')
 
 def generate_image(prompt):
     # Assuming `pipe` is defined somewhere in your code
