@@ -23,7 +23,7 @@ def generate():
     image = generate_image(text)
     # Convert the NumPy array to a PIL Image
     pil_image = Image.fromarray(image)
-    # Save the PIL Image as a temporary file
+    Save the PIL Image as a temporary file
     random_string = secrets.token_hex(8)
     filename = f'generated_{random_string}.png'
     #pil_image.save(filename)
